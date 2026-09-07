@@ -1,6 +1,6 @@
-# [Project name]
+# Cobranza Venezuela
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Aplicación móvil web para gestionar ventas a crédito, cuotas y cobranza en Venezuela con montos base en USD y conversión a BsS.
 
 ## Run & Operate
 
@@ -22,15 +22,21 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/cobranza-venezuela` — aplicación React/Vite responsive y sus rutas de dashboard, clientes, créditos, reportes, ajustes y contrato.
+- `artifacts/api-server/src/routes/collections.ts` — API de clientes, créditos, pagos, actividad, tasa y contratos.
+- `lib/api-spec/openapi.yaml` — contrato único de la API; ejecutar codegen después de editarlo.
+- `lib/db/src/schema/` — tablas de clientes, créditos, cuotas, pagos, actividad y tasa de cambio.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Los montos de negocio se calculan en USD; los pagos Pago Móvil guardan también BsS y la tasa aplicada.
+- PostgreSQL administrado por el workspace es la fuente persistente para el primer lanzamiento, evitando depender de credenciales externas.
+- La interfaz consume hooks generados desde OpenAPI y no mantiene fixtures locales como fuente de verdad.
+- La navegación prioriza uso móvil con acceso rápido a clientes, nuevo crédito, reportes y ajustes.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+El producto permite revisar el total por cobrar, buscar clientes, consultar expedientes y cronogramas, crear créditos, registrar pagos directos o en BsS, compartir estados de cuenta y ajustar la tasa BCV.
 
 ## User preferences
 
@@ -38,7 +44,9 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Después de modificar `lib/api-spec/openapi.yaml`, ejecutar `pnpm --filter @workspace/api-spec run codegen`.
+- La API usa `/api`; la aplicación web se sirve en `/`.
+- Los valores `numeric` de PostgreSQL se convierten a número antes de validar respuestas con los esquemas generados.
 
 ## Pointers
 

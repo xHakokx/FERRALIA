@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Cobranza Venezuela"
+description = "Aplicación móvil web para gestionar ventas a crédito y cobranza en Venezuela, con clientes, créditos, pagos multimoneda, tasa BCV y contratos digitales."
+version = "1.0.0"
+id = "artifacts/cobranza-venezuela"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22706
+
+[services.development]
+run = "pnpm --filter @workspace/cobranza-venezuela run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/cobranza-venezuela", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/cobranza-venezuela/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22706"
+BASE_PATH = "/"

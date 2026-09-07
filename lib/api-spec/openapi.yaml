@@ -3,13 +3,23 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API para gestión de crédito y cobranza en Venezuela
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: dashboard
+    description: Resumen operativo
+  - name: customers
+    description: Expedientes de clientes
+  - name: credits
+    description: Créditos y pagos
+  - name: settings
+    description: Configuración de la tasa
+  - name: contracts
+    description: Contratos digitales
 paths:
   /healthz:
     get:
@@ -24,7 +34,234 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /dashboard-summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary
+      responses:
+        "200":
+          description: Current portfolio summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent collection activity
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Recent activity events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityEvent"
+  /customers:
+    get:
+      operationId: listCustomers
+      tags: [customers]
+      summary: List customers
+      parameters:
+        - $ref: "#/components/parameters/Search"
+        - $ref: "#/components/parameters/CustomerStatus"
+      responses:
+        "200":
+          description: Customer list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Customer"
+    post:
+      operationId: createCustomer
+      tags: [customers]
+      summary: Create customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerInput"
+      responses:
+        "201":
+          description: Customer created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers/{customerId}:
+    get:
+      operationId: getCustomer
+      tags: [customers]
+      summary: Get customer expediente
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      responses:
+        "200":
+          description: Customer with credits and payment history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerDetail"
+        "404":
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /customers/{customerId}/statement:
+    get:
+      operationId: getCustomerStatement
+      tags: [customers]
+      summary: Get customer statement
+      parameters:
+        - $ref: "#/components/parameters/CustomerId"
+      responses:
+        "200":
+          description: Statement ready for sharing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerStatement"
+  /credits:
+    post:
+      operationId: createCredit
+      tags: [credits]
+      summary: Create credit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditInput"
+      responses:
+        "201":
+          description: Credit created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Credit"
+  /credits/{creditId}:
+    get:
+      operationId: getCredit
+      tags: [credits]
+      summary: Get credit amortization
+      parameters:
+        - $ref: "#/components/parameters/CreditId"
+      responses:
+        "200":
+          description: Credit with installment schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditDetail"
+  /credits/{creditId}/payments:
+    post:
+      operationId: createPayment
+      tags: [credits]
+      summary: Register credit payment
+      parameters:
+        - $ref: "#/components/parameters/CreditId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentInput"
+      responses:
+        "201":
+          description: Payment registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+  /settings/rate:
+    get:
+      operationId: getExchangeRate
+      tags: [settings]
+      summary: Get current BCV exchange rate
+      responses:
+        "200":
+          description: Current exchange rate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRate"
+    patch:
+      operationId: updateExchangeRate
+      tags: [settings]
+      summary: Update exchange rate manually
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExchangeRateInput"
+      responses:
+        "200":
+          description: Updated exchange rate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRate"
+  /contracts/{creditId}:
+    get:
+      operationId: getContract
+      tags: [contracts]
+      summary: Get digital contract link
+      parameters:
+        - $ref: "#/components/parameters/CreditId"
+      responses:
+        "200":
+          description: Contract details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
 components:
+  parameters:
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+    CreditId:
+      name: creditId
+      in: path
+      required: true
+      schema:
+        type: string
+    Search:
+      name: search
+      in: query
+      required: false
+      schema:
+        type: string
+    CustomerStatus:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [all, current, overdue, finished]
+        default: all
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 10
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +270,188 @@ components:
           type: string
       required:
         - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    CustomerStatus:
+      type: string
+      enum: [current, overdue, finished]
+    PaymentMethod:
+      type: string
+      enum: [mobile_payment, cash_usd, zelle, binance]
+    Customer:
+      type: object
+      required: [id, fullName, idNumber, phone, address, status, activeDebt, balanceFavor, creditsCount]
+      properties:
+        id: { type: string }
+        fullName: { type: string }
+        idNumber: { type: string }
+        phone: { type: string }
+        address: { type: string }
+        status: { $ref: "#/components/schemas/CustomerStatus" }
+        activeDebt: { type: number }
+        balanceFavor: { type: number }
+        creditsCount: { type: integer }
+        nextDueDate: { type: ["string", "null"], format: date }
+    CustomerInput:
+      type: object
+      required: [firstName, lastName, idNumber, phone, address]
+      properties:
+        firstName: { type: string, minLength: 1 }
+        lastName: { type: string, minLength: 1 }
+        idNumber: { type: string, minLength: 3 }
+        phone: { type: string, minLength: 7 }
+        address: { type: string, minLength: 5 }
+    CustomerDetail:
+      allOf:
+        - $ref: "#/components/schemas/Customer"
+        - type: object
+          required: [credits, payments]
+          properties:
+            credits:
+              type: array
+              items:
+                $ref: "#/components/schemas/Credit"
+            payments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Payment"
+            identityDocumentUrl: { type: ["string", "null"], format: uri }
+            signatureUrl: { type: ["string", "null"], format: uri }
+    CreditStatus:
+      type: string
+      enum: [active, overdue, finished]
+    Credit:
+      type: object
+      required: [id, customerId, productName, totalAmount, downPayment, financedAmount, installmentCount, installmentAmount, paidAmount, remainingAmount, status, nextDueDate]
+      properties:
+        id: { type: string }
+        customerId: { type: string }
+        productName: { type: string }
+        totalAmount: { type: number }
+        downPayment: { type: number }
+        financedAmount: { type: number }
+        installmentCount: { type: integer }
+        installmentAmount: { type: number }
+        paidAmount: { type: number }
+        remainingAmount: { type: number }
+        status: { $ref: "#/components/schemas/CreditStatus" }
+        nextDueDate: { type: ["string", "null"], format: date }
+        createdAt: { type: string, format: date-time }
+    CreditInput:
+      type: object
+      required: [customerId, productName, totalAmount, downPayment, installmentCount, firstDueDate]
+      properties:
+        customerId: { type: string }
+        productName: { type: string, minLength: 1 }
+        totalAmount: { type: number, exclusiveMinimum: 0 }
+        downPayment: { type: number, minimum: 0 }
+        installmentCount: { type: integer, minimum: 2, maximum: 20 }
+        firstDueDate: { type: string, format: date }
+    CreditDetail:
+      allOf:
+        - $ref: "#/components/schemas/Credit"
+        - type: object
+          required: [installments]
+          properties:
+            installments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Installment"
+    Installment:
+      type: object
+      required: [number, dueDate, amount, paidAmount, remainingAmount, status]
+      properties:
+        number: { type: integer }
+        dueDate: { type: string, format: date }
+        amount: { type: number }
+        paidAmount: { type: number }
+        remainingAmount: { type: number }
+        status:
+          type: string
+          enum: [pending, partial, paid, overdue]
+    Payment:
+      type: object
+      required: [id, creditId, customerId, method, amountUsd, amountBs, exchangeRate, paidAt]
+      properties:
+        id: { type: string }
+        creditId: { type: string }
+        customerId: { type: string }
+        method: { $ref: "#/components/schemas/PaymentMethod" }
+        amountUsd: { type: number }
+        amountBs: { type: ["number", "null"] }
+        exchangeRate: { type: ["number", "null"] }
+        paidAt: { type: string, format: date-time }
+        note: { type: ["string", "null"] }
+    PaymentInput:
+      type: object
+      required: [method]
+      properties:
+        method: { $ref: "#/components/schemas/PaymentMethod" }
+        amountUsd: { type: ["number", "null"], minimum: 0 }
+        amountBs: { type: ["number", "null"], minimum: 0 }
+        exchangeRate: { type: ["number", "null"], exclusiveMinimum: 0 }
+        note: { type: string }
+    DashboardSummary:
+      type: object
+      required: [totalToCollect, collectedThisMonth, overdueAmount, activeCustomers, overdueCustomers, dueToday]
+      properties:
+        totalToCollect: { type: number }
+        collectedThisMonth: { type: number }
+        overdueAmount: { type: number }
+        activeCustomers: { type: integer }
+        overdueCustomers: { type: integer }
+        dueToday: { type: integer }
+    ActivityEvent:
+      type: object
+      required: [id, type, title, description, amount, occurredAt]
+      properties:
+        id: { type: string }
+        type:
+          type: string
+          enum: [payment, credit, overdue, customer]
+        title: { type: string }
+        description: { type: string }
+        amount: { type: ["number", "null"] }
+        occurredAt: { type: string, format: date-time }
+    ExchangeRate:
+      type: object
+      required: [value, source, updatedAt]
+      properties:
+        value: { type: number, exclusiveMinimum: 0 }
+        source:
+          type: string
+          enum: [bcv, manual]
+        updatedAt: { type: string, format: date-time }
+    ExchangeRateInput:
+      type: object
+      required: [value]
+      properties:
+        value: { type: number, exclusiveMinimum: 0 }
+    CustomerStatement:
+      type: object
+      required: [customer, credits, totalPaid, totalRemaining, shareText]
+      properties:
+        customer: { $ref: "#/components/schemas/Customer" }
+        credits:
+          type: array
+          items: { $ref: "#/components/schemas/Credit" }
+        totalPaid: { type: number }
+        totalRemaining: { type: number }
+        shareText: { type: string }
+    Contract:
+      type: object
+      required: [id, creditId, customerId, url, status, createdAt]
+      properties:
+        id: { type: string }
+        creditId: { type: string }
+        customerId: { type: string }
+        url: { type: string, format: uri }
+        status:
+          type: string
+          enum: [pending, signed]
+        createdAt: { type: string, format: date-time }
 
