@@ -25,7 +25,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NotFound from '@/pages/not-found';
-import logoUrl from '@assets/photo_2026-09-07_20-52-49_1788828789860.jpg';
+import logoUrl from '@assets/photo_2026-09-07_20-52-49_1788831139273.jpg';
 import '@/index.css';
 
 const queryClient = new QueryClient();
