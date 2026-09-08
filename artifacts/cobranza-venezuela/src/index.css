@@ -81,53 +81,53 @@
 
   --background: 37 33% 95%;
 
-  --foreground: 161 25% 18%;
+  --foreground: 35 25% 17%;
 
   --border: 36 22% 86%;
 
   --card: 39 40% 98%;
 
-  --card-foreground: 161 25% 18%;
+  --card-foreground: 35 25% 17%;
 
   --card-border: 36 22% 88%;
 
-  --sidebar: 163 31% 15%;
+  --sidebar: 34 24% 17%;
 
   --sidebar-foreground: 45 32% 91%;
 
-  --sidebar-border: 163 25% 23%;
+  --sidebar-border: 36 28% 28%;
 
-  --sidebar-primary: 39 76% 67%;
+  --sidebar-primary: 40 78% 57%;
 
-  --sidebar-primary-foreground: 163 31% 15%;
+  --sidebar-primary-foreground: 35 25% 16%;
 
-  --sidebar-accent: 163 25% 21%;
+  --sidebar-accent: 36 24% 24%;
 
   --sidebar-accent-foreground: 45 32% 91%;
 
-  --sidebar-ring: 39 76% 67%;
+  --sidebar-ring: 40 78% 57%;
 
   --popover: 39 40% 98%;
 
-  --popover-foreground: 161 25% 18%;
+  --popover-foreground: 35 25% 17%;
 
   --popover-border: 36 22% 88%;
 
-  --primary: 164 48% 30%;
+  --primary: 40 74% 48%;
 
-  --primary-foreground: 39 40% 98%;
+  --primary-foreground: 36 28% 16%;
 
   --secondary: 39 76% 67%;
 
-  --secondary-foreground: 163 31% 15%;
+  --secondary-foreground: 35 25% 16%;
 
   --muted: 38 26% 91%;
 
-  --muted-foreground: 161 12% 45%;
+  --muted-foreground: 35 12% 45%;
 
   --accent: 14 70% 68%;
 
-  --accent-foreground: 161 25% 18%;
+  --accent-foreground: 35 25% 17%;
 
   --destructive: 4 66% 54%;
 
@@ -135,11 +135,11 @@
 
   --input: 36 22% 82%;
   --ring: 39 76% 67%;
-  --chart-1: 164 48% 30%;
+  --chart-1: 40 74% 48%;
   --chart-2: 39 76% 67%;
   --chart-3: 14 70% 68%;
   --chart-4: 193 39% 47%;
-  --chart-5: 161 25% 18%;
+  --chart-5: 35 25% 17%;
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: 'Fraunces', serif;
@@ -228,67 +228,67 @@
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
 
-  --background: 163 31% 10%;
+  --background: 35 18% 10%;
 
   --foreground: 45 32% 91%;
 
-  --border: 163 25% 23%;
+  --border: 36 20% 24%;
 
-  --card: 163 27% 14%;
+  --card: 34 20% 15%;
 
-  --card-foreground: 45 32% 91%;
+  --card-foreground: 43 38% 92%;
 
-  --card-border: 163 25% 23%;
+  --card-border: 36 20% 24%;
 
-  --sidebar: 163 31% 8%;
+  --sidebar: 33 23% 8%;
 
   --sidebar-foreground: 45 32% 91%;
 
-  --sidebar-border: 163 25% 18%;
+  --sidebar-border: 36 20% 20%;
 
-  --sidebar-primary: 39 76% 67%;
+  --sidebar-primary: 40 78% 57%;
 
-  --sidebar-primary-foreground: 163 31% 15%;
+  --sidebar-primary-foreground: 35 25% 16%;
 
-  --sidebar-accent: 163 25% 18%;
+  --sidebar-accent: 36 22% 19%;
 
   --sidebar-accent-foreground: 45 32% 91%;
 
-  --sidebar-ring: 39 76% 67%;
+  --sidebar-ring: 40 78% 57%;
 
-  --popover: 163 27% 14%;
+  --popover: 34 20% 15%;
 
   --popover-foreground: 45 32% 91%;
 
-  --popover-border: 163 25% 23%;
+  --popover-border: 36 20% 24%;
 
-  --primary: 39 76% 67%;
+  --primary: 40 78% 57%;
 
-  --primary-foreground: 163 31% 15%;
+  --primary-foreground: 35 25% 16%;
 
-  --secondary: 163 25% 23%;
+  --secondary: 36 20% 23%;
 
   --secondary-foreground: 45 32% 91%;
 
-  --muted: 163 25% 19%;
+  --muted: 36 20% 20%;
 
   --muted-foreground: 45 15% 65%;
 
   --accent: 14 70% 68%;
 
-  --accent-foreground: 163 31% 15%;
+  --accent-foreground: 35 25% 16%;
 
   --destructive: 4 66% 54%;
 
   --destructive-foreground: 39 40% 98%;
 
   /* Used as the border around inputs. Dark mode: Should be a border that is light enough to have high contrast when rendered on a --card background. More contrast than standard --border */
-  --input: 163 25% 27%;
+  --input: 36 20% 28%;
   --ring: 39 76% 67%;
   --chart-1: 39 76% 67%;
   --chart-2: 14 70% 68%;
   --chart-3: 193 39% 47%;
-  --chart-4: 164 48% 45%;
+  --chart-4: 40 78% 57%;
   --chart-5: 45 32% 91%;
 
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
