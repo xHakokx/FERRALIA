@@ -1,6 +1,6 @@
-# Cobranza Venezuela
+# FERRALIA · Cobranza Venezuela
 
-Aplicación móvil web para gestionar ventas a crédito, cuotas y cobranza en Venezuela con montos base en USD y conversión a BsS.
+Aplicación móvil web de FERRALIA — “ECCELLENZA INDUSTRIALE” — para gestionar ventas a crédito, cuotas y cobranza en Venezuela con montos base en USD y conversión a BsS.
 
 ## Run & Operate
 
